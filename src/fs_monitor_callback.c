@@ -13,6 +13,7 @@
 #include "fs_access_agent_consts.h"
 #include "fs_log_field.h"
 #include "fs_udp.h"
+#include "fs_monitor_log.h"
 
 void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result) {
 	char forward_ip[DEFAULT_STR_LEN] = {0};
@@ -39,7 +40,7 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 	char resp_time[DEFAULT_STR_LEN] = {0};
 	get_resp_time(result , resp_time);
 
-	printf("[提取信息]forward ip:%s client ip:%s method:%s status:%s interface:%s service:%s time:%s response time:%s\n" ,
+	INFO_LOG("[提取信息]forward ip:%s client ip:%s method:%s status:%s interface:%s service:%s time:%s response time:%s\n" ,
 			forward_ip , client_ip , method , status , interface , service , time , resp_time);
 
 	struct fs_udp_packet packet;
@@ -78,17 +79,17 @@ void file_modified(struct fs_monitor_worker * worker) {
 		(void)memset(line , 0x00 , DEFAULT_LINE_BUUFER_SIZE);
 	}
 
-	printf("[读取信息] offset:%d inotofy:%d\n" , worker->offset , worker->notify_fd);
+	INFO_LOG("[读取信息] offset:%d inotofy:%d\n" , worker->offset , worker->notify_fd);
 
 	close_file(fd);
 }
 
 void file_deleted(struct fs_monitor_worker * worker) {
-	printf("文件被删除\n");
+	INFO_LOG("文件被删除\n");
 }
 
 void file_created(struct fs_monitor_worker * worker) {
-	printf("文件被创建\n");
+	INFO_LOG("文件被创建\n");
 }
 
 void file_moved(struct fs_monitor_worker * worker) {

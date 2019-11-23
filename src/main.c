@@ -7,6 +7,7 @@
 
 #include "fs_init_daemon.h"
 #include "fs_monitor_worker_pool.h"
+#include "fs_monitor_log.h"
 
 #include <signal.h>
 #include <stdio.h>
@@ -26,6 +27,8 @@ int main(int argc , char ** argv) {
 	}
 
 	signal(SIGPIPE , SIG_IGN);
+
+	INFO_LOG("访问日志分析服务启动,%d" , getpid());
 
 	if (-1 == init_worker_pool(DEFAULT_POOL_NAME , DEFUALT_POOL_MAX_SIZE , argv[1])) {
 		perror("初始化任务池失败");
