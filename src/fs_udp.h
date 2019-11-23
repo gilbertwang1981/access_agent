@@ -15,8 +15,8 @@ struct fs_udp_packet {
 	char client_ip[DEFAULT_IP_ADDRESS_LEN];
 	char method[DEFAULT_METHOD_LEN];
 	char status[DEFAULT_STATUS_LEN];
-	char interface[DEFAULT_STR_LEN];
-	char service[DEFAULT_STR_LEN];
+	char interface[DEFAULT_INF_LEN];
+	char service[DEFAULT_SERVICE_LEN];
 	char time[DEFAULT_TIME_LEN];
 	char resp_time[DEFUALT_RESP_TIME_LEN];
 };
