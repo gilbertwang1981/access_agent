@@ -9,6 +9,7 @@
 #include "fs_monitor.h"
 #include "fs_monitor_worker.h"
 #include "fs_monitor_worker_pool.h"
+#include "fs_monitor_log.h"
 
 #include <sys/inotify.h>
 #include <string.h>
@@ -30,7 +31,7 @@ struct fs_monitor_worker * create_worker(char * dir , char * file , char * host 
 
 	worker->sock_fd = init_net();
 	if (worker->sock_fd == -1) {
-		perror("初始化udp socket失败");
+		ERROR_LOG("初始化udp socket失败");
 
 		free(worker);
 
@@ -39,7 +40,7 @@ struct fs_monitor_worker * create_worker(char * dir , char * file , char * host 
 
 	worker->notify_fd = inotify_init();
 	if (worker->notify_fd == -1) {
-		perror("初始化inotify失败");
+		ERROR_LOG("初始化inotify失败");
 
 		free(worker);
 
@@ -48,7 +49,7 @@ struct fs_monitor_worker * create_worker(char * dir , char * file , char * host 
 
 	worker->watch_dog = inotify_add_watch(worker->notify_fd , worker->dir , IN_ALL_EVENTS);
 	if (worker->watch_dog == -1) {
-		perror("初始化watch dog失败");
+		ERROR_LOG("初始化watch dog失败");
 
 		free(worker);
 

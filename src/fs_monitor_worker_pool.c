@@ -7,6 +7,7 @@
 
 
 #include "fs_monitor_worker_pool.h"
+#include "fs_monitor_log.h"
 
 #include <string.h>
 
@@ -25,7 +26,7 @@ int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path) {
 	while (cfg_ptr != 0) {
 		struct fs_monitor_worker * worker = 0;
 		if (0 == (worker = create_worker(cfg_ptr->dir , cfg_ptr->file , cfg_ptr->host , cfg_ptr->port))) {
-			perror("初始化任务失败");
+			ERROR_LOG("初始化任务失败");
 
 			return -1;
 		}

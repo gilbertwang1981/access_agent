@@ -7,6 +7,7 @@
 
 #include "fs_udp.h"
 #include "fs_access_agent_consts.h"
+#include "fs_monitor_log.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -23,7 +24,7 @@ int send_to_server(int sock_fd , char * host , int port , struct fs_udp_packet p
 
 	int bytes = -1;
 	if (-1 == (bytes = sendto(sock_fd , &packet , sizeof(packet) , 0 , (struct sockaddr*)&addr , sizeof(addr)))) {
-		perror("发送错误");
+		ERROR_LOG("发送错误");
 
 		return -1;
 	}
@@ -45,7 +46,7 @@ int destory_net(int sock_fd) {
 int init_net() {
 	int sock_fd = socket(AF_INET,SOCK_DGRAM,0);
 	if (sock_fd == -1) {
-		perror("socket创建失败");
+		ERROR_LOG("socket创建失败");
 
 		return -1;
 	}

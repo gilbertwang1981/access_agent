@@ -8,6 +8,7 @@
 #include "fs_monitor.h"
 #include "fs_monitor_callback.h"
 #include "fs_access_agent_consts.h"
+#include "fs_monitor_log.h"
 
 void handle_event(struct fs_monitor_worker * worker) {
 	char buffer[INOTIFY_BUFFER_SIZE] = {0};
@@ -61,7 +62,7 @@ void fs_changed_monitor(struct fs_monitor_worker_pool * worker_pool) {
 
 		int ret = select(max_fd + 1 , &readfd , 0 , 0 , &timeout);
 		if (ret == -1) {
-			perror("I/O多路复用错误");
+			ERROR_LOG("I/O多路复用错误");
 		} else if (ret > 0) {
 			struct fs_monitor_worker * pworker = worker_pool->worker_list;
 			while (pworker != 0) {

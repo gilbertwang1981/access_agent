@@ -6,6 +6,7 @@
  */
 
 #include "fs_monitor_cfg.h"
+#include "fs_monitor_log.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -89,7 +90,7 @@ struct fs_monitor_cfg * read_cfg(char * cfg_path) {
 
 	int fd = -1;
 	if (-1 == (fd = open(cfg_path , O_RDWR | O_CREAT , 0755))) {
-		perror("打开文件失败");
+		ERROR_LOG("打开文件失败,%s" , cfg_path);
 
 		return 0;
 	}

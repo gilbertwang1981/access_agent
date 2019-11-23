@@ -11,19 +11,20 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "fs_monitor_log.h"
 #include "fs_access_agent_consts.h"
 #include "fs_filed_linked_list.h"
 
 int open_file(char * path , unsigned int offset) {
 	int fd = -1;
 	if (-1 == (fd = open(path , O_RDWR | O_CREAT , 0755))) {
-		perror("打开文件失败");
+		ERROR_LOG("打开文件失败,%s" , path);
 
 		return -1;
 	}
 
 	if (-1 == lseek(fd , offset , SEEK_SET)) {
-		perror("重置偏移失败");
+		ERROR_LOG("重置偏移失败,%s" , path);
 
 		close_file(fd);
 
@@ -56,7 +57,7 @@ struct field_linked_list * analysis_line(char * line) {
 
 int close_file(int fd) {
 	if (-1 == close(fd)) {
-		perror("关闭文件失败");
+		ERROR_LOG("关闭文件失败,%d" , fd);
 
 		return -1;
 	}
@@ -66,7 +67,7 @@ int close_file(int fd) {
 
 int read_line(int fd , char * line) {
 	if (-1 == fd) {
-		perror("文件描述符失效");
+		ERROR_LOG("文件描述符失效,%d" , fd);
 
 		return -1;
 	}
