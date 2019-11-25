@@ -24,5 +24,6 @@ struct fs_monitor_worker_pool {
 int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path);
 void add_worker_to_pool(struct fs_monitor_worker * worker);
 struct fs_monitor_worker * get_worker_list(void);
+struct fs_monitor_worker_pool * get_worker_pool(void);
 
 #endif /* _FS_MONITOR_WORKER_POOL_H_ */

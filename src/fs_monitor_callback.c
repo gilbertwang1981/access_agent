@@ -13,8 +13,11 @@
 #include "fs_access_agent_consts.h"
 #include "fs_udp.h"
 #include "fs_monitor_log.h"
+#include "fs_monitor_worker_pool.h"
 
 void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result) {
+	struct fs_monitor_worker_pool * worker_pool = get_worker_pool();
+
 	struct fs_udp_packet packet;
 	if (-1 == send_to_server(worker->sock_fd , worker->host , worker->port , packet)) {
 		perror("发送失败");

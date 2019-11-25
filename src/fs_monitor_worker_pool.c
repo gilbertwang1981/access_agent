@@ -14,6 +14,10 @@
 
 static struct fs_monitor_worker_pool worker_pool;
 
+struct fs_monitor_worker_pool * get_worker_pool() {
+	return &worker_pool;
+}
+
 int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path) {
 	worker_pool.pool_max_size = pool_max_size;
 
