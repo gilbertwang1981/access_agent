@@ -9,8 +9,8 @@
 #define _FS_MONITOR_WORKER_POOL_H_
 
 #include "fs_access_agent_consts.h"
+#include "fs_monitor_dir_file_cfg.h"
 #include "fs_monitor_worker.h"
-#include "fs_monitor_cfg.h"
 
 struct fs_monitor_worker_pool {
 	char pool_name[DEFAULT_STR_LEN];

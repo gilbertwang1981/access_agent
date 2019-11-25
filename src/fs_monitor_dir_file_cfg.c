@@ -1,12 +1,12 @@
 /*
- * fs_monitor_cfg.c
+ * fs_monitor_dir_file_cfg.c
  *
  *  Created on: Nov 22, 2019
  *      Author: gilbert
  */
 
-#include "fs_monitor_cfg.h"
 #include "fs_monitor_log.h"
+#include "fs_monitor_dir_file_cfg.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -79,7 +79,7 @@ void handle_cfg_line(struct fs_monitor_cfg * cfg , char * line) {
 	}
 }
 
-struct fs_monitor_cfg * read_cfg(char * cfg_path) {
+struct fs_monitor_cfg * read_dir_file_cfg(char * cfg_path) {
 	int i =0;
 	for (;i < CFG_MAX_ITEM; i ++) {
 		(void)memset(cfg[i].dir , 0x00 , DEFAULT_STR_LEN);
