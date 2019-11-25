@@ -11,48 +11,11 @@
 
 #include "fs_monitor_callback.h"
 #include "fs_access_agent_consts.h"
-#include "fs_log_field.h"
 #include "fs_udp.h"
 #include "fs_monitor_log.h"
 
 void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result) {
-	char forward_ip[DEFAULT_STR_LEN] = {0};
-	get_forward_ip(result , forward_ip);
-
-	char client_ip[DEFAULT_STR_LEN] = {0};
-	get_client_ip(result , client_ip);
-
-	char method[DEFAULT_STR_LEN] = {0};
-	get_method(result , method);
-
-	char status[DEFAULT_STR_LEN] = {0};
-	get_status(result , status);
-
-	char interface[DEFAULT_STR_LEN] = {0};
-	get_interface(result , interface);
-
-	char service[DEFAULT_STR_LEN] = {0};
-	get_service_host(result , service);
-
-	char time[DEFAULT_STR_LEN] = {0};
-	get_timestamp(result , time);
-
-	char resp_time[DEFAULT_STR_LEN] = {0};
-	get_resp_time(result , resp_time);
-
-	INFO_LOG("[提取信息]forward ip:%s client ip:%s method:%s status:%s interface:%s service:%s time:%s response time:%s\n" ,
-			forward_ip , client_ip , method , status , interface , service , time , resp_time);
-
 	struct fs_udp_packet packet;
-	(void)strcpy(packet.client_ip , client_ip);
-	(void)strcpy(packet.forward_ip , forward_ip);
-	(void)strcpy(packet.interface , interface);
-	(void)strcpy(packet.method , method);
-	(void)strcpy(packet.resp_time , resp_time);
-	(void)strcpy(packet.service , service);
-	(void)strcpy(packet.status , status);
-	(void)strcpy(packet.time , time);
-
 	if (-1 == send_to_server(worker->sock_fd , worker->host , worker->port , packet)) {
 		perror("发送失败");
 	}
