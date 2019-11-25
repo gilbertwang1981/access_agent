@@ -23,9 +23,13 @@ int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path) {
 
 	char file_dir[DEFAULT_STR_LEN] = {0};
 	(void)sprintf(file_dir , "%s/fs_monitor_dir_file.cfg" , cfg_path);
-	worker_pool.cfg_list = read_dir_file_cfg(file_dir);
+	worker_pool.dir_file_cfg_list = read_dir_file_cfg(file_dir);
 
-	struct fs_monitor_cfg * cfg_ptr = worker_pool.cfg_list;
+	char field_path[DEFAULT_STR_LEN] = {0};
+	(void)sprintf(field_path , "%s/fs_monitor_field.cfg" , cfg_path);
+	worker_pool.field_cfg_list = read_field_cfg(field_path);
+
+	struct fs_monitor_dir_file_cfg * cfg_ptr = worker_pool.dir_file_cfg_list;
 	while (cfg_ptr != 0) {
 		struct fs_monitor_worker * worker = 0;
 		if (0 == (worker = create_worker(cfg_ptr->dir , cfg_ptr->file , cfg_ptr->host , cfg_ptr->port))) {

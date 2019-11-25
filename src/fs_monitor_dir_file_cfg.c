@@ -15,9 +15,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-static struct fs_monitor_cfg cfg[CFG_MAX_ITEM];
+static struct fs_monitor_dir_file_cfg cfg[CFG_MAX_ITEM];
 
-int read_line_without_null(int fd , char * line) {
+int read_line_without_null_dir_file_cfg(int fd , char * line) {
 	char c = 0x00;
 	int index = 0;
 	int line_counter = 0;
@@ -42,7 +42,7 @@ int read_line_without_null(int fd , char * line) {
 	return 0;
 }
 
-void handle_cfg_line(struct fs_monitor_cfg * cfg , char * line) {
+void handle_dir_file_cfg_line(struct fs_monitor_dir_file_cfg * cfg , char * line) {
 	char field[DEFAULT_STR_LEN] = {0};
 	char value[DEFAULT_STR_LEN] = {0};
 	char field_name[DEFAULT_STR_LEN] = {0};
@@ -79,7 +79,7 @@ void handle_cfg_line(struct fs_monitor_cfg * cfg , char * line) {
 	}
 }
 
-struct fs_monitor_cfg * read_dir_file_cfg(char * cfg_path) {
+struct fs_monitor_dir_file_cfg * read_dir_file_cfg(char * cfg_path) {
 	int i =0;
 	for (;i < CFG_MAX_ITEM; i ++) {
 		(void)memset(cfg[i].dir , 0x00 , DEFAULT_STR_LEN);
@@ -96,9 +96,9 @@ struct fs_monitor_cfg * read_dir_file_cfg(char * cfg_path) {
 	}
 
 	char line[DEFAULT_LINE_BUUFER_SIZE] = {0};
-	while (read_line_without_null(fd , line) > 0) {
+	while (read_line_without_null_dir_file_cfg(fd , line) > 0) {
 		if (strlen(line) > 0) {
-			handle_cfg_line(cfg , line);
+			handle_dir_file_cfg_line(cfg , line);
 		}
 
 		(void)memset(line , 0x00 , DEFAULT_LINE_BUUFER_SIZE);
@@ -106,10 +106,10 @@ struct fs_monitor_cfg * read_dir_file_cfg(char * cfg_path) {
 
 	(void)close(fd);
 
-	struct fs_monitor_cfg * ret = 0;
+	struct fs_monitor_dir_file_cfg * ret = 0;
 	for (i = 0;i < CFG_MAX_ITEM; i ++) {
 		if (strlen(cfg[i].dir) > 0) {
-			struct fs_monitor_cfg * ptr = (struct fs_monitor_cfg *)malloc(sizeof(struct fs_monitor_cfg));
+			struct fs_monitor_dir_file_cfg * ptr = (struct fs_monitor_dir_file_cfg *)malloc(sizeof(struct fs_monitor_dir_file_cfg));
 			(void)strcpy(ptr->dir , cfg[i].dir);
 			(void)strcpy(ptr->file , cfg[i].file);
 			(void)strcpy(ptr->host , cfg[i].host);
