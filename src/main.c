@@ -17,7 +17,7 @@
 
 int main(int argc , char ** argv) {
 	if (argc != 3) {
-		ERROR_LOG("命令：./access_agent cfg_path isbg");
+		ERROR_LOG("命令：./access_agent cfg_dir_path is_daemon");
 
 		return -1;
 	}

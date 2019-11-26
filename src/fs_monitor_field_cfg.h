@@ -20,6 +20,6 @@ struct fs_monitor_field_cfg {
 
 struct fs_monitor_field_cfg * read_field_cfg(char * cfg_path);
 int read_line_without_null_field_cfg(int fd , char * line);
-void handle_field_cfg_line(struct fs_monitor_field_cfg * cfg , char * line);
+void handle_field_cfg_line(char * line);
 
 #endif /* _FS_MONITOR_FIELD_CFG_H_ */

@@ -10,18 +10,7 @@
 
 #include "fs_access_agent_consts.h"
 
-struct fs_udp_packet {
-	char forward_ip[DEFAULT_IP_ADDRESS_LEN];
-	char client_ip[DEFAULT_IP_ADDRESS_LEN];
-	char method[DEFAULT_METHOD_LEN];
-	char status[DEFAULT_STATUS_LEN];
-	char interface[DEFAULT_INF_LEN];
-	char service[DEFAULT_SERVICE_LEN];
-	char time[DEFAULT_TIME_LEN];
-	char resp_time[DEFUALT_RESP_TIME_LEN];
-};
-
-int send_to_server(int sock_fd , char * host , int port , struct fs_udp_packet packet);
+int send_to_server(int sock_fd , char * host , int port , char * buffer , int size);
 
 int init_net();
 

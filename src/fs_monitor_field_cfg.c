@@ -15,7 +15,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static struct fs_monitor_field_cfg * field_cfg = 0;
+static struct fs_monitor_field_cfg * file_cfg = 0;
 
 struct fs_monitor_field_cfg * read_field_cfg(char * cfg_path) {
 	int fd = -1;
@@ -28,7 +28,7 @@ struct fs_monitor_field_cfg * read_field_cfg(char * cfg_path) {
 	char line[DEFAULT_LINE_BUUFER_SIZE] = {0};
 	while (read_line_without_null_field_cfg(fd , line) > 0) {
 		if (strlen(line) > 0) {
-			handle_field_cfg_line(field_cfg , line);
+			handle_field_cfg_line(line);
 		}
 
 		(void)memset(line , 0x00 , DEFAULT_LINE_BUUFER_SIZE);
@@ -36,7 +36,7 @@ struct fs_monitor_field_cfg * read_field_cfg(char * cfg_path) {
 
 	(void)close(fd);
 
-	return 0;
+	return file_cfg;
 }
 
 int read_line_without_null_field_cfg(int fd , char * line) {
@@ -64,7 +64,7 @@ int read_line_without_null_field_cfg(int fd , char * line) {
 	return 0;
 }
 
-void handle_field_cfg_line(struct fs_monitor_field_cfg * cfg , char * line) {
+void handle_field_cfg_line(char * line) {
 	char field[DEFAULT_STR_LEN] = {0};
 	int size = -1;
 	int index = -1;
@@ -90,17 +90,17 @@ void handle_field_cfg_line(struct fs_monitor_field_cfg * cfg , char * line) {
 	}
 
 	if (size >= 0 && index >= 0) {
-		struct fs_monitor_field_cfg * field_cfg = (struct fs_monitor_field_cfg *)malloc(sizeof(struct fs_monitor_field_cfg));
-		field_cfg->index = index;
-		field_cfg->size = size;
-		(void)strcpy(field_cfg->field , field);
-		field_cfg->next = 0;
+		struct fs_monitor_field_cfg * pfield_cfg = (struct fs_monitor_field_cfg *)malloc(sizeof(struct fs_monitor_field_cfg));
+		pfield_cfg->index = index;
+		pfield_cfg->size = size;
+		(void)strcpy(pfield_cfg->field , field);
+		pfield_cfg->next = 0;
 
-		if (cfg == 0) {
-			cfg = field_cfg;
+		if (file_cfg == 0) {
+			file_cfg = pfield_cfg;
 		} else {
-			field_cfg->next = cfg;
-			cfg = field_cfg;
+			pfield_cfg->next = file_cfg;
+			file_cfg = pfield_cfg;
 		}
 	}
 }

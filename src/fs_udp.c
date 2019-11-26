@@ -16,14 +16,14 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-int send_to_server(int sock_fd , char * host , int port , struct fs_udp_packet packet) {
+int send_to_server(int sock_fd , char * host , int port , char * buffer , int size) {
 	struct sockaddr_in addr;
 	addr.sin_family =AF_INET;
 	addr.sin_port =htons(port);
 	addr.sin_addr.s_addr = inet_addr(host);
 
 	int bytes = -1;
-	if (-1 == (bytes = sendto(sock_fd , &packet , sizeof(packet) , 0 , (struct sockaddr*)&addr , sizeof(addr)))) {
+	if (-1 == (bytes = sendto(sock_fd , buffer , size , 0 , (struct sockaddr*)&addr , sizeof(addr)))) {
 		ERROR_LOG("发送错误");
 
 		return -1;
