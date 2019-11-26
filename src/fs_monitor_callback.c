@@ -19,15 +19,21 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 	struct fs_monitor_worker_pool * worker_pool = get_worker_pool();
 
 	char snd_buffer[DEFAULT_LINE_BUUFER_SIZE] = {0};
+	char log_buffer[DEFAULT_LINE_BUUFER_SIZE] = {0};
 	int size = 0;
 
 	struct field_linked_list * ptr = result;
+	int offset = 0;
+	int log_offset = 0;
 	while (ptr != 0) {
 		struct fs_monitor_field_cfg * pfield = worker_pool->field_cfg_list;
 		while (pfield != 0) {
 			if (pfield->index == ptr->index) {
 
-				printf("%s\t" , ptr->field);
+				log_offset += sprintf(log_buffer + log_offset , "%s|" , ptr->field);
+
+				(void)memcpy(snd_buffer + offset , ptr->field , pfield->size);
+				size += pfield->size;
 
 				break;
 			}
@@ -38,7 +44,7 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 		ptr = ptr->next;
 	}
 
-	printf("\n");
+	INFO_LOG("发送消息：%s" , log_buffer);
 
 	if (-1 == send_to_server(worker->sock_fd , worker->host , worker->port , snd_buffer , size)) {
 		ERROR_LOG("发送失败");
