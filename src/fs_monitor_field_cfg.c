@@ -82,6 +82,8 @@ int read_line_without_null_field_cfg(int fd , char * line) {
 		}
 	}
 
+	line[index] = '\0';
+
 	return 0;
 }
 

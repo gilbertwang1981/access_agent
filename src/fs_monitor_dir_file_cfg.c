@@ -39,6 +39,8 @@ int read_line_without_null_dir_file_cfg(int fd , char * line) {
 		}
 	}
 
+	line[index] = '\0';
+
 	return 0;
 }
 
