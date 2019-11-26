@@ -12,20 +12,6 @@
 
 #define DEFAULT_STR_LEN	256
 
-#define	DEFAULT_IP_ADDRESS_LEN	16
-
-#define	DEFAULT_METHOD_LEN	8
-
-#define	DEFAULT_STATUS_LEN	4
-
-#define DEFUALT_RESP_TIME_LEN	8
-
-#define DEFAULT_TIME_LEN	32
-
-#define DEFAULT_SERVICE_LEN	32
-
-#define DEFAULT_INF_LEN	64
-
 #define DEFAULT_POOL_NAME	"fs_monitor_worker_pool"
 
 #define DEFUALT_POOL_MAX_SIZE	64
