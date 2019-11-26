@@ -52,6 +52,23 @@ struct field_linked_list * analysis_line(char * line) {
 		token = strtok(0 , "\t");
 	}
 
+	struct field_linked_list * ptr = ele_header;
+	struct field_linked_list * new_header = 0;
+	while (ptr != 0) {
+		if (new_header == 0) {
+			new_header = ptr;
+			ptr = ptr->next;
+			new_header->next = 0;
+		} else {
+			struct field_linked_list * tmp = ptr;
+			ptr = ptr->next;
+			tmp->next = new_header;
+			new_header = tmp;
+		}
+	}
+
+	ele_header = new_header;
+
 	return ele_header;
 }
 

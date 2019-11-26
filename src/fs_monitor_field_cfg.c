@@ -36,6 +36,27 @@ struct fs_monitor_field_cfg * read_field_cfg(char * cfg_path) {
 
 	(void)close(fd);
 
+	if (file_cfg == 0) {
+		return 0;
+	}
+
+	struct fs_monitor_field_cfg * ptr = file_cfg;
+	struct fs_monitor_field_cfg * header = 0;
+	while (ptr != 0) {
+		if (header == 0) {
+			header = ptr;
+			ptr = ptr->next;
+			header->next = 0;
+		} else {
+			struct fs_monitor_field_cfg * tmp = ptr;
+			ptr = ptr->next;
+			tmp->next = header;
+			header = tmp;
+		}
+	}
+
+	file_cfg = header;
+
 	return file_cfg;
 }
 
