@@ -44,8 +44,10 @@ struct field_linked_list * analysis_line(char * line , char * separator) {
 
 		ele->index = index ++;
 		ele->next = 0;
-		(void)memset(ele->field , 0x00 , DEFAULT_STR_LEN);
-		strcpy(ele->field , token);
+		if (strlen(token) < DEFAULT_STR_LEN) {
+			(void)memset(ele->field , 0x00 , DEFAULT_STR_LEN);
+			strcpy(ele->field , token);
+		}
 
 		ele_header = add_field_linked_list(ele_header , ele);
 

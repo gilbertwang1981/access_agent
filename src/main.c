@@ -30,7 +30,7 @@ int main(int argc , char ** argv) {
 
 	INFO_LOG("访问日志分析服务启动,%d" , getpid());
 
-	if (-1 == init_worker_pool(DEFAULT_POOL_NAME , DEFUALT_POOL_MAX_SIZE , argv[1])) {
+	if (-1 == init_worker_pool(DEFAULT_POOL_NAME , DEFUALT_POOL_MAX_SIZE , argv[1] , "\t")) {
 		ERROR_LOG("初始化任务池失败");
 
 		return -1;

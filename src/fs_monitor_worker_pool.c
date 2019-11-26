@@ -18,7 +18,7 @@ struct fs_monitor_worker_pool * get_worker_pool() {
 	return &worker_pool;
 }
 
-int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path) {
+int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path , char * separator) {
 	worker_pool.pool_max_size = pool_max_size;
 
 	(void)strcpy(worker_pool.pool_name , pool_name);
@@ -43,7 +43,7 @@ int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path) {
 	struct fs_monitor_dir_file_cfg * cfg_ptr = worker_pool.dir_file_cfg_list;
 	while (cfg_ptr != 0) {
 		struct fs_monitor_worker * worker = 0;
-		if (0 == (worker = create_worker(cfg_ptr->dir , cfg_ptr->file , cfg_ptr->host , cfg_ptr->port))) {
+		if (0 == (worker = create_worker(cfg_ptr->dir , cfg_ptr->file , cfg_ptr->host , cfg_ptr->port , separator))) {
 			ERROR_LOG("初始化任务失败");
 
 			return -1;

@@ -67,7 +67,7 @@ void file_modified(struct fs_monitor_worker * worker) {
 	while ((ret = read_line(fd , line)) > 0) {
 		worker->offset += ret;
 
-		synchronize(worker , line , "\t");
+		synchronize(worker , line , worker->separator);
 
 		(void)memset(line , 0x00 , DEFAULT_LINE_BUUFER_SIZE);
 	}
