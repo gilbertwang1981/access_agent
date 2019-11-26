@@ -86,5 +86,7 @@ void file_created(struct fs_monitor_worker * worker) {
 }
 
 void file_moved(struct fs_monitor_worker * worker) {
+	INFO_LOG("文件被迁移\n");
+
 	worker->offset = 0;
 }
