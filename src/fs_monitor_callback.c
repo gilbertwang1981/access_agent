@@ -44,7 +44,7 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 		ptr = ptr->next;
 	}
 
-	INFO_LOG("发送消息：%s" , log_buffer);
+	printf("发送消息：%s" , log_buffer);
 
 	if (-1 == send_to_server(worker->sock_fd , worker->host , worker->port , snd_buffer , size)) {
 		ERROR_LOG("发送失败");
