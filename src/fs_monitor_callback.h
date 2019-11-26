@@ -15,7 +15,7 @@ void file_modified(struct fs_monitor_worker * worker);
 void file_deleted(struct fs_monitor_worker * worker);
 void file_created(struct fs_monitor_worker * worker);
 void file_moved(struct fs_monitor_worker * worker);
-void synchronize(struct fs_monitor_worker * worker , char * line);
+void synchronize(struct fs_monitor_worker * worker , char * line , char * separator);
 void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result);
 
 #endif /* _FS_MONITOR_CALLBACK_H_ */

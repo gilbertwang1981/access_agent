@@ -51,8 +51,8 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 	}
 }
 
-void synchronize(struct fs_monitor_worker * worker , char * line) {
-	struct field_linked_list * result = analysis_line(line);
+void synchronize(struct fs_monitor_worker * worker , char * line , char * separator) {
+	struct field_linked_list * result = analysis_line(line , separator);
 
 	packet_udp(worker , result);
 
@@ -67,7 +67,7 @@ void file_modified(struct fs_monitor_worker * worker) {
 	while ((ret = read_line(fd , line)) > 0) {
 		worker->offset += ret;
 
-		synchronize(worker , line);
+		synchronize(worker , line , "\t");
 
 		(void)memset(line , 0x00 , DEFAULT_LINE_BUUFER_SIZE);
 	}

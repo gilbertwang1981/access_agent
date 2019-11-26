@@ -34,10 +34,10 @@ int open_file(char * path , unsigned int offset) {
 	return fd;
 }
 
-struct field_linked_list * analysis_line(char * line) {
+struct field_linked_list * analysis_line(char * line , char * separator) {
 	struct field_linked_list *  ele_header = 0;
 
-	char * token = strtok(line , "\t");
+	char * token = strtok(line , separator);
 	int index = 0;
 	while (token != 0) {
 		struct field_linked_list * ele = (struct field_linked_list *)malloc(sizeof(struct field_linked_list));
@@ -49,7 +49,7 @@ struct field_linked_list * analysis_line(char * line) {
 
 		ele_header = add_field_linked_list(ele_header , ele);
 
-		token = strtok(0 , "\t");
+		token = strtok(0 , separator);
 	}
 
 	struct field_linked_list * ptr = ele_header;

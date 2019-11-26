@@ -16,6 +16,6 @@ int close_file(int fd);
 
 char * read_line(int fd , char * line);
 
-struct field_linked_list * analysis_line(char * line);
+struct field_linked_list * analysis_line(char * line , char * separator);
 
 #endif /* _FS_FILE_ANALYSIS_H_ */
