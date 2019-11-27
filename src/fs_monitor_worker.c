@@ -19,7 +19,7 @@ void run_worker_loop(struct fs_monitor_worker_pool * worker_pool) {
 	fs_changed_monitor(worker_pool);
 }
 
-struct fs_monitor_worker * create_worker(char * dir , char * file , char * host , int port , char * separator) {
+struct fs_monitor_worker * create_worker(char * dir , char * file , char * host , int port , long separator) {
 	struct fs_monitor_worker * worker = (struct fs_monitor_worker *)malloc(sizeof(struct fs_monitor_worker));
 
 	worker->offset = 0;
@@ -28,7 +28,7 @@ struct fs_monitor_worker * create_worker(char * dir , char * file , char * host 
 	(void)strcpy(worker->host , host);
 	(void)strcpy(worker->dir , dir);
 	(void)strcpy(worker->file , file);
-	(void)strcpy(worker->separator , separator);
+	worker->separator = separator;
 
 	worker->sock_fd = init_net();
 	if (worker->sock_fd == -1) {

@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "fs_monitor_log.h"
 #include "fs_access_agent_consts.h"
@@ -34,10 +35,13 @@ int open_file(char * path , unsigned int offset) {
 	return fd;
 }
 
-struct field_linked_list * analysis_line(char * line , char * separator) {
+struct field_linked_list * analysis_line(char * line , long separator) {
 	struct field_linked_list *  ele_header = 0;
 
-	char * token = strtok(line , separator);
+	char sep[DEFAULT_STR_LEN] = {0};
+	(void)sprintf(sep , "%c" , separator);
+
+	char * token = strtok(line , sep);
 	int index = 0;
 	while (token != 0) {
 		struct field_linked_list * ele = (struct field_linked_list *)malloc(sizeof(struct field_linked_list));
@@ -51,7 +55,7 @@ struct field_linked_list * analysis_line(char * line , char * separator) {
 
 		ele_header = add_field_linked_list(ele_header , ele);
 
-		token = strtok(0 , separator);
+		token = strtok(0 , sep);
 	}
 
 	struct field_linked_list * ptr = ele_header;

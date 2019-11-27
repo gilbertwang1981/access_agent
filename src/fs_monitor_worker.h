@@ -19,11 +19,11 @@ struct fs_monitor_worker {
 	unsigned int offset;
 	int notify_fd;
 	int watch_dog;
-	char separator[DEFAULT_STR_LEN];
+	long separator;
 
 	struct fs_monitor_worker * next;
 };
 
-struct fs_monitor_worker * create_worker(char * dir , char * file , char * host , int port , char * separator);
+struct fs_monitor_worker * create_worker(char * dir , char * file , char * host , int port , long separator);
 
 #endif /* _FS_MONITOR_WORKER_H_ */

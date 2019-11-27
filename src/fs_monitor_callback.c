@@ -51,7 +51,7 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 	}
 }
 
-void synchronize(struct fs_monitor_worker * worker , char * line , char * separator) {
+void synchronize(struct fs_monitor_worker * worker , char * line , long separator) {
 	struct field_linked_list * result = analysis_line(line , separator);
 
 	packet_udp(worker , result);

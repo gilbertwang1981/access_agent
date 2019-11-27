@@ -16,13 +16,14 @@
 #include <stdlib.h>
 
 int main(int argc , char ** argv) {
-	if (argc != 3) {
-		ERROR_LOG("命令：./access_agent cfg_dir_path is_daemon");
+	if (argc != 4) {
+		ERROR_LOG("命令：./access_agent cfg_dir_path separator is_daemon, "
+				"比如：./access_agent /root/access_agent_config 0x20 0");
 
 		return -1;
 	}
 
-	if (1 == atoi(argv[2])) {
+	if (1 == atoi(argv[3])) {
 		init_daemon();
 	}
 
@@ -30,7 +31,7 @@ int main(int argc , char ** argv) {
 
 	INFO_LOG("访问日志分析服务启动,%d" , getpid());
 
-	if (-1 == init_worker_pool(DEFAULT_POOL_NAME , DEFUALT_POOL_MAX_SIZE , argv[1] , "\t")) {
+	if (-1 == init_worker_pool(DEFAULT_POOL_NAME , DEFUALT_POOL_MAX_SIZE , argv[1] , strtol(argv[2] , '\0', 16))) {
 		ERROR_LOG("初始化任务池失败");
 
 		return -1;
