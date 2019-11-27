@@ -8,6 +8,7 @@
 
 #include "fs_monitor_worker_pool.h"
 #include "fs_monitor_log.h"
+#include "fs_monitor_cfg.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -26,6 +27,10 @@ int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path , lo
 	worker_pool.worker_list = 0;
 	worker_pool.field_cfg_list = 0;
 	worker_pool.dir_file_cfg_list = 0;
+
+	char cfg_file_path[DEFAULT_STR_LEN] = {0};
+	(void)sprintf(cfg_file_path , "%s/fs_monitor.cfg" , cfg_path);
+	struct fs_monitor_common_cfg * common_cfg = read_cfg(cfg_file_path);
 
 	char file_dir[DEFAULT_STR_LEN] = {0};
 	(void)sprintf(file_dir , "%s/fs_monitor_dir_file.cfg" , cfg_path);
