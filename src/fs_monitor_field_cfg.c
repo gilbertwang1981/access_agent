@@ -25,13 +25,13 @@ struct fs_monitor_field_cfg * read_field_cfg(char * cfg_path) {
 		return 0;
 	}
 
-	char line[DEFAULT_LINE_BUUFER_SIZE] = {0};
+	char line[DEFAULT_LINE_BUFFER_SIZE] = {0};
 	while (read_line_without_null_field_cfg(fd , line) > 0) {
 		if (strlen(line) > 0) {
 			handle_field_cfg_line(line);
 		}
 
-		(void)memset(line , 0x00 , DEFAULT_LINE_BUUFER_SIZE);
+		(void)memset(line , 0x00 , DEFAULT_LINE_BUFFER_SIZE);
 	}
 
 	(void)close(fd);
@@ -75,8 +75,8 @@ int read_line_without_null_field_cfg(int fd , char * line) {
 
 		line[index ++] = c;
 
-		if (index == DEFAULT_LINE_BUUFER_SIZE - 1) {
-			line[DEFAULT_LINE_BUUFER_SIZE - 1] = '\0';
+		if (index == DEFAULT_LINE_BUFFER_SIZE - 1) {
+			line[DEFAULT_LINE_BUFFER_SIZE - 1] = '\0';
 
 			return line_counter;
 		}

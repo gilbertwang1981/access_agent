@@ -115,8 +115,8 @@ int read_line(int fd , char * line) {
 			continue;
 		}
 
-		if (index == DEFAULT_LINE_BUUFER_SIZE - 1) {
-			line[DEFAULT_LINE_BUUFER_SIZE - 1] = '\0';
+		if (index == DEFAULT_LINE_BUFFER_SIZE - 1) {
+			line[DEFAULT_LINE_BUFFER_SIZE - 1] = '\0';
 
 			return line_counter;
 		}

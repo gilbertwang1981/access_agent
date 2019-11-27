@@ -18,8 +18,8 @@
 void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result) {
 	struct fs_monitor_worker_pool * worker_pool = get_worker_pool();
 
-	char snd_buffer[DEFAULT_LINE_BUUFER_SIZE] = {0};
-	char log_buffer[DEFAULT_LINE_BUUFER_SIZE] = {0};
+	char snd_buffer[DEFAULT_LINE_BUFFER_SIZE] = {0};
+	char log_buffer[DEFAULT_LINE_BUFFER_SIZE] = {0};
 	int size = 0;
 
 	struct field_linked_list * ptr = result;
@@ -62,14 +62,14 @@ void synchronize(struct fs_monitor_worker * worker , char * line , long separato
 void file_modified(struct fs_monitor_worker * worker) {
 	int fd = open_file(worker->file , worker->offset);
 
-	char line[DEFAULT_LINE_BUUFER_SIZE] = {0};
+	char line[DEFAULT_LINE_BUFFER_SIZE] = {0};
 	int ret = 0;
 	while ((ret = read_line(fd , line)) > 0) {
 		worker->offset += ret;
 
 		synchronize(worker , line , worker->separator);
 
-		(void)memset(line , 0x00 , DEFAULT_LINE_BUUFER_SIZE);
+		(void)memset(line , 0x00 , DEFAULT_LINE_BUFFER_SIZE);
 	}
 
 	INFO_LOG("[读取信息] offset:%d inotofy:%d\n" , worker->offset , worker->notify_fd);

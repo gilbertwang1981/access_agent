@@ -8,7 +8,7 @@
 #ifndef _ACCESS_AGENT_CONSTS_H_
 #define _ACCESS_AGENT_CONSTS_H_
 
-#define DEFAULT_LINE_BUUFER_SIZE	8192
+#define DEFAULT_LINE_BUFFER_SIZE	8192
 
 #define DEFAULT_STR_LEN	256
 
@@ -27,5 +27,9 @@
 #define CFG_FIELD_NAME_PORT	"port"
 
 #define CFG_MAX_ITEM	128
+
+#define CFG_ITEM_TYPE_KV	0
+
+#define CFG_ITEM_TYPE_ARRAY	1
 
 #endif /* _ACCESS_AGENT_CONSTS_H_ */
