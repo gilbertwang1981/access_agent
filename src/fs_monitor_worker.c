@@ -10,6 +10,8 @@
 #include "fs_monitor_worker.h"
 #include "fs_monitor_worker_pool.h"
 #include "fs_monitor_log.h"
+#include "fs_monitor_util.h"
+#include "fs_monitor_sys_cfg.h"
 
 #include <sys/inotify.h>
 #include <string.h>
@@ -22,7 +24,12 @@ void run_worker_loop(struct fs_monitor_worker_pool * worker_pool) {
 struct fs_monitor_worker * create_worker(char * dir , char * file , char * host , int port , long separator) {
 	struct fs_monitor_worker * worker = (struct fs_monitor_worker *)malloc(sizeof(struct fs_monitor_worker));
 
-	worker->offset = 0;
+	if (get_fs_monitor_sys_cfg()->is_from_begin) {
+		worker->offset = 0;
+	} else {
+		worker->offset = get_file_size(file);
+	}
+
 	worker->next = 0;
 	worker->port = port;
 	(void)strcpy(worker->host , host);
