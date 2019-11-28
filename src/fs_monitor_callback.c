@@ -16,8 +16,6 @@
 #include "fs_monitor_sys_cfg.h"
 #include "fs_monitor_worker_pool.h"
 
-static int send_index_ctr = 0;
-
 void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result) {
 	struct fs_monitor_worker_pool * worker_pool = get_worker_pool();
 
