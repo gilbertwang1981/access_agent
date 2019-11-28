@@ -8,125 +8,63 @@
 #include "fs_monitor_log.h"
 #include "fs_monitor_dir_file_cfg.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
-static struct fs_monitor_dir_file_cfg cfg[CFG_MAX_ITEM];
+static struct fs_monitor_dir_file_cfg * dir_file_cfg_ptr = 0;
 
-int read_line_without_null_dir_file_cfg(int fd , char * line) {
-	char c = 0x00;
-	int index = 0;
-	int line_counter = 0;
-	while (1 == read(fd , &c , 1)) {
-		line_counter ++;
+struct fs_monitor_dir_file_cfg * convert_dir_file_cfg(struct fs_monitor_common_cfg * common_cfg) {
+	struct fs_monitor_common_cfg * ptr = common_cfg;
+	int isFound = 0;
+	while (ptr != 0) {
+		if (strcmp(ptr->item , "dir_file") == 0) {
+			isFound = 1;
 
-		if (c == '\n') {
-			line[index] = '\0';
-
-			return line_counter;
+			break;
 		}
 
-		line[index ++] = c;
-
-		if (index == DEFAULT_LINE_BUFFER_SIZE - 1) {
-			line[DEFAULT_LINE_BUFFER_SIZE - 1] = '\0';
-
-			return line_counter;
-		}
+		ptr = ptr->next;
 	}
 
-	line[index] = '\0';
+	if (isFound) {
+		struct fs_monitor_cfg_item * pitems = ptr->items;
+		while (pitems != 0) {
+			int i = 0;
+			char dir[DEFAULT_STR_LEN] = {0};
+			char file[DEFAULT_STR_LEN] = {0};
+			char host[DEFAULT_STR_LEN] = {0};
+			char port[DEFAULT_STR_LEN] = {0};
+			for (;i < CFG_DIR_FILE_FIELDS_NUM;i ++) {
+				if (strcmp(pitems->key , "dir") == 0) {
+					(void)strcpy(dir , pitems->value);
+				} else if (strcmp(pitems->key , "file") == 0) {
+					(void)strcpy(file , pitems->value);
+				} else if (strcmp(pitems->key , "host") == 0) {
+					(void)strcpy(host , pitems->value);
+				} else if (strcmp(pitems->key , "port") == 0) {
+					(void)strcpy(port , pitems->value);
+				}
 
-	return 0;
-}
+				pitems = pitems->next;
+			}
 
-void handle_dir_file_cfg_line(struct fs_monitor_dir_file_cfg * cfg , char * line) {
-	char field[DEFAULT_STR_LEN] = {0};
-	char value[DEFAULT_STR_LEN] = {0};
-	char field_name[DEFAULT_STR_LEN] = {0};
-	int field_index = -1;
+			if (strlen(dir) > 0 && strlen(file) > 0 && strlen(host) > 0 && strlen(port) > 0) {
+				struct fs_monitor_dir_file_cfg * config = (struct fs_monitor_dir_file_cfg *)malloc(sizeof(struct fs_monitor_dir_file_cfg));
+				(void)strcpy(config->dir , dir);
+				(void)strcpy(config->file , file);
+				(void)strcpy(config->host , host);
+				config->port = atoi(port);
 
-	char * token = strtok(line , "=");
-	if (token != 0) {
-		(void)strcpy(field , token);
-
-		token = strtok(0 , "=");
-		if (token != 0) {
-			(void)strcpy(value , token);
-		}
-
-		char * t = strtok(field , "_");
-		if (t != 0) {
-			(void)strcpy(field_name , t);
-
-			t = strtok(0 , "_");
-			if (t != 0) {
-				field_index = atoi(t);
+				if (dir_file_cfg_ptr == 0) {
+					dir_file_cfg_ptr = config;
+				} else {
+					config->next = dir_file_cfg_ptr;
+					dir_file_cfg_ptr = config;
+				}
 			}
 		}
 	}
 
-	if (strcmp(field_name , CFG_FIELD_NAME_DIR) == 0) {
-		(void)strcpy(cfg[field_index].dir , value);
-	} else if (strcmp(field_name , CFG_FIELD_NAME_FILE) == 0) {
-		(void)strcpy(cfg[field_index].file , value);
-	} else if (strcmp(field_name , CFG_FIELD_NAME_HOST) == 0) {
-		(void)strcpy(cfg[field_index].host , value);
-	} else if (strcmp(field_name , CFG_FIELD_NAME_PORT) == 0) {
-		cfg[field_index].port = atoi(value);
-	}
-}
-
-struct fs_monitor_dir_file_cfg * read_dir_file_cfg(char * cfg_path) {
-	int i =0;
-	for (;i < CFG_MAX_ITEM; i ++) {
-		(void)memset(cfg[i].dir , 0x00 , DEFAULT_STR_LEN);
-		(void)memset(cfg[i].file , 0x00 , DEFAULT_STR_LEN);
-		(void)memset(cfg[i].host , 0x00 , DEFAULT_STR_LEN);
-		cfg[i].port = -1;
-	}
-
-	int fd = -1;
-	if (-1 == (fd = open(cfg_path , O_RDWR | O_CREAT , 0755))) {
-		ERROR_LOG("打开文件失败,%s" , cfg_path);
-
-		return 0;
-	}
-
-	char line[DEFAULT_LINE_BUFFER_SIZE] = {0};
-	while (read_line_without_null_dir_file_cfg(fd , line) > 0) {
-		if (strlen(line) > 0) {
-			handle_dir_file_cfg_line(cfg , line);
-		}
-
-		(void)memset(line , 0x00 , DEFAULT_LINE_BUFFER_SIZE);
-	}
-
-	(void)close(fd);
-
-	struct fs_monitor_dir_file_cfg * ret = 0;
-	for (i = 0;i < CFG_MAX_ITEM; i ++) {
-		if (strlen(cfg[i].dir) > 0) {
-			struct fs_monitor_dir_file_cfg * ptr = (struct fs_monitor_dir_file_cfg *)malloc(sizeof(struct fs_monitor_dir_file_cfg));
-			(void)strcpy(ptr->dir , cfg[i].dir);
-			(void)strcpy(ptr->file , cfg[i].file);
-			(void)strcpy(ptr->host , cfg[i].host);
-			ptr->port = cfg[i].port;
-
-			ptr->next = 0;
-
-			if (ret == 0) {
-				ret = ptr;
-			} else {
-				ptr->next = ret;
-				ret = ptr;
-			}
-		}
-	}
-
-	return ret;
+	return dir_file_cfg_ptr;
 }

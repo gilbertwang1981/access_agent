@@ -28,22 +28,15 @@ int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path , lo
 	worker_pool.field_cfg_list = 0;
 	worker_pool.dir_file_cfg_list = 0;
 
-	char cfg_file_path[DEFAULT_STR_LEN] = {0};
-	(void)sprintf(cfg_file_path , "%s/fs_monitor.cfg" , cfg_path);
-	struct fs_monitor_common_cfg * common_cfg = read_cfg(cfg_file_path);
-
-	char file_dir[DEFAULT_STR_LEN] = {0};
-	(void)sprintf(file_dir , "%s/fs_monitor_dir_file.cfg" , cfg_path);
-	worker_pool.dir_file_cfg_list = read_dir_file_cfg(file_dir);
-
-	char field_path[DEFAULT_STR_LEN] = {0};
-	(void)sprintf(field_path , "%s/fs_monitor_field.cfg" , cfg_path);
-	worker_pool.field_cfg_list = read_field_cfg(field_path);
-	if (worker_pool.field_cfg_list == 0) {
-		ERROR_LOG("初始化字段配置文件失败");
+	struct fs_monitor_common_cfg * common_cfg = read_cfg(cfg_path);
+	if (common_cfg == 0) {
+		ERROR_LOG("初始化配置文件失败");
 
 		return -1;
 	}
+
+	worker_pool.dir_file_cfg_list = convert_dir_file_cfg(common_cfg);
+	worker_pool.field_cfg_list = convert_field_cfg(common_cfg);
 
 	struct fs_monitor_dir_file_cfg * cfg_ptr = worker_pool.dir_file_cfg_list;
 	while (cfg_ptr != 0) {

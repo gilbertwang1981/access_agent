@@ -9,6 +9,7 @@
 #define _FS_MONITOR_DIR_FILE_CFG_H_
 
 #include "fs_access_agent_consts.h"
+#include "fs_monitor_cfg.h"
 
 struct fs_monitor_dir_file_cfg {
 	char dir[DEFAULT_STR_LEN];
@@ -19,8 +20,6 @@ struct fs_monitor_dir_file_cfg {
 	struct fs_monitor_dir_file_cfg * next;
 };
 
-struct fs_monitor_dir_file_cfg * read_dir_file_cfg(char * cfg_path);
-int read_line_without_null_dir_file_cfg(int fd , char * line);
-void handle_dir_file_cfg_line(struct fs_monitor_dir_file_cfg * cfg , char * line);
+struct fs_monitor_dir_file_cfg * convert_dir_file_cfg(struct fs_monitor_common_cfg * common_cfg);
 
 #endif /* _FS_MONITOR_DIR_FILE_CFG_H_ */

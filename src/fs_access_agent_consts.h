@@ -18,18 +18,10 @@
 
 #define INOTIFY_BUFFER_SIZE	1024
 
-#define CFG_FIELD_NAME_DIR	"dir"
-
-#define CFG_FIELD_NAME_FILE	"file"
-
-#define CFG_FIELD_NAME_HOST	"host"
-
-#define CFG_FIELD_NAME_PORT	"port"
-
-#define CFG_MAX_ITEM	128
-
 #define CFG_ITEM_TYPE_KV	0
 
 #define CFG_ITEM_TYPE_ARRAY	1
+
+#define CFG_DIR_FILE_FIELDS_NUM	4
 
 #endif /* _ACCESS_AGENT_CONSTS_H_ */

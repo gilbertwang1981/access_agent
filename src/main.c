@@ -17,8 +17,8 @@
 
 int main(int argc , char ** argv) {
 	if (argc != 4) {
-		ERROR_LOG("命令：./access_agent cfg_dir_path separator is_daemon, "
-				"比如：./access_agent /root/access_agent_config 0x20 0");
+		ERROR_LOG("命令：./access_agent cfg_file_path separator is_daemon, "
+				"比如：./access_agent /root/access_agent/config/fs_monitor.cfg 0x20 0");
 
 		return -1;
 	}
