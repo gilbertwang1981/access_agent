@@ -15,6 +15,7 @@ struct fs_monitor_sys_cfg {
 	char separator[DEFAULT_STR_LEN];
 	int is_daemon;
 	int is_from_begin;
+	int sampling_rate;
 };
 
 struct fs_monitor_sys_cfg * convert_sys_cfg(struct fs_monitor_common_cfg * common_cfg);

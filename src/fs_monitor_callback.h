@@ -17,5 +17,6 @@ void file_created(struct fs_monitor_worker * worker);
 void file_moved(struct fs_monitor_worker * worker);
 void synchronize(struct fs_monitor_worker * worker , char * line , long separator);
 void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result);
+int is_should_read(void);
 
 #endif /* _FS_MONITOR_CALLBACK_H_ */

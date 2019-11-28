@@ -36,6 +36,7 @@ struct fs_monitor_sys_cfg * convert_sys_cfg(struct fs_monitor_common_cfg * commo
 		char separator[DEFAULT_STR_LEN] = {0};
 		char is_daemon[DEFAULT_STR_LEN] = {0};
 		char is_from_begin[DEFAULT_STR_LEN] = {0};
+		char sampling_rate[DEFAULT_STR_LEN] = {0};
 		while (pitems != 0) {
 			if (strcmp(pitems->key , "separator") == 0) {
 				(void)strcpy(separator , pitems->value);
@@ -43,12 +44,15 @@ struct fs_monitor_sys_cfg * convert_sys_cfg(struct fs_monitor_common_cfg * commo
 				(void)strcpy(is_daemon , pitems->value);
 			} else if (strcmp(pitems->key , "is_from_begin") == 0) {
 				(void)strcpy(is_from_begin , pitems->value);
+			} else if (strcmp(pitems->key , "sampling_rate") == 0) {
+				(void)strcpy(sampling_rate , pitems->value);
 			}
 
 			pitems = pitems->next;
 		}
 
-		if (strlen(separator) > 0 && strlen(is_daemon) > 0 && strlen(is_from_begin) > 0) {
+		if (strlen(separator) > 0 && strlen(is_daemon) > 0 && strlen(is_from_begin) > 0 &&
+				strlen(sampling_rate) > 0) {
 			struct fs_monitor_sys_cfg * config = (struct fs_monitor_sys_cfg *)malloc(sizeof(struct fs_monitor_sys_cfg));
 
 			if (strcmp(is_daemon , "true") == 0) {
@@ -62,6 +66,8 @@ struct fs_monitor_sys_cfg * convert_sys_cfg(struct fs_monitor_common_cfg * commo
 			} else {
 				config->is_from_begin = 0;
 			}
+
+			config->sampling_rate = atoi(sampling_rate);
 
 			(void)strcpy(config->separator , separator);
 
