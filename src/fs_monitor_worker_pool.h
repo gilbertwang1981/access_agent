@@ -21,7 +21,7 @@ struct fs_monitor_worker_pool {
 	struct fs_monitor_field_cfg * field_cfg_list;
 };
 
-int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path , long separator);
+int init_worker_pool(char * pool_name , int pool_max_size , long separator , struct fs_monitor_common_cfg * common_cfg);
 void add_worker_to_pool(struct fs_monitor_worker * worker);
 struct fs_monitor_worker * get_worker_list(void);
 struct fs_monitor_worker_pool * get_worker_pool(void);

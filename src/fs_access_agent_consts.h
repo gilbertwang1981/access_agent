@@ -24,4 +24,6 @@
 
 #define CFG_DIR_FILE_FIELDS_NUM	4
 
+#define CFG_SYS_FIELDS_NUM	3
+
 #endif /* _ACCESS_AGENT_CONSTS_H_ */

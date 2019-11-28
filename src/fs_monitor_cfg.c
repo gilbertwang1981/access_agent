@@ -41,7 +41,7 @@ int read_cfg_line(int fd , char * line) {
 
 	line[index] = '\0';
 
-	return 0;
+	return line_counter;
 }
 
 void handle_cfg_line(char * line) {

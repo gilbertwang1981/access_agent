@@ -19,7 +19,7 @@ struct fs_monitor_worker_pool * get_worker_pool() {
 	return &worker_pool;
 }
 
-int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path , long separator) {
+int init_worker_pool(char * pool_name , int pool_max_size , long separator , struct fs_monitor_common_cfg * common_cfg) {
 	worker_pool.pool_max_size = pool_max_size;
 
 	(void)strcpy(worker_pool.pool_name , pool_name);
@@ -27,13 +27,6 @@ int init_worker_pool(char * pool_name , int pool_max_size , char * cfg_path , lo
 	worker_pool.worker_list = 0;
 	worker_pool.field_cfg_list = 0;
 	worker_pool.dir_file_cfg_list = 0;
-
-	struct fs_monitor_common_cfg * common_cfg = read_cfg(cfg_path);
-	if (common_cfg == 0) {
-		ERROR_LOG("初始化配置文件失败");
-
-		return -1;
-	}
 
 	worker_pool.dir_file_cfg_list = convert_dir_file_cfg(common_cfg);
 	worker_pool.field_cfg_list = convert_field_cfg(common_cfg);
