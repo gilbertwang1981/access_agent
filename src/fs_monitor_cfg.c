@@ -137,7 +137,7 @@ struct fs_monitor_common_cfg * read_cfg(char * cfg_path) {
 
 	char line[DEFAULT_LINE_BUFFER_SIZE] = {0};
 	while (read_cfg_line(fd , line) > 0) {
-		if (strlen(line) > 0) {
+		if (strlen(line) > 0 && line[0] != '#') {
 			handle_cfg_line(line);
 		}
 
