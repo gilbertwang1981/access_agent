@@ -62,7 +62,7 @@ void synchronize(struct fs_monitor_worker * worker , char * line , long separato
 
 int is_should_read(struct fs_monitor_worker * worker) {
 	struct fs_monitor_sys_cfg * sys_cfg = get_fs_monitor_sys_cfg();
-	if (worker->sampling_rate_ctr > 100) {
+	if (worker->sampling_rate_ctr >= 100) {
 		worker->sampling_rate_ctr = 0;
 	}
 
