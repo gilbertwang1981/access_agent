@@ -19,4 +19,6 @@ struct fs_monitor_sys_cfg {
 
 struct fs_monitor_sys_cfg * convert_sys_cfg(struct fs_monitor_common_cfg * common_cfg);
 
+struct fs_monitor_sys_cfg * get_fs_monitor_sys_cfg(void);
+
 #endif /* _FS_MONITOR_SYS_CFG_H_ */
