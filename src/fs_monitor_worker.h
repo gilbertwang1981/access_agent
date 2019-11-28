@@ -20,6 +20,7 @@ struct fs_monitor_worker {
 	int notify_fd;
 	int watch_dog;
 	long separator;
+	int sampling_rate_ctr;
 
 	struct fs_monitor_worker * next;
 };

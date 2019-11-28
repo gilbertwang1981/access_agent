@@ -62,14 +62,14 @@ void synchronize(struct fs_monitor_worker * worker , char * line , long separato
 	free_field_linked_list(result);
 }
 
-int is_should_read() {
+int is_should_read(struct fs_monitor_worker * worker) {
 	struct fs_monitor_sys_cfg * sys_cfg = get_fs_monitor_sys_cfg();
-	if (send_index_ctr > 100) {
-		send_index_ctr = 0;
+	if (worker->sampling_rate_ctr > 100) {
+		worker->sampling_rate_ctr = 0;
 	}
 
 	int step = (int)(100 / sys_cfg->sampling_rate);
-	if (send_index_ctr ++ % step == 0) {
+	if (worker->sampling_rate_ctr ++ % step == 0) {
 		return 1;
 	} else {
 		return 0;
@@ -84,7 +84,7 @@ void file_modified(struct fs_monitor_worker * worker) {
 	while ((ret = read_line(fd , line)) > 0) {
 		worker->offset += ret;
 
-		if (is_should_read()) {
+		if (is_should_read(worker)) {
 			synchronize(worker , line , worker->separator);
 		}
 

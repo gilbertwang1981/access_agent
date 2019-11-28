@@ -37,6 +37,8 @@ struct fs_monitor_worker * create_worker(char * dir , char * file , char * host 
 	(void)strcpy(worker->file , file);
 	worker->separator = separator;
 
+	worker->sampling_rate_ctr = 0;
+
 	worker->sock_fd = init_net();
 	if (worker->sock_fd == -1) {
 		ERROR_LOG("初始化udp socket失败");
