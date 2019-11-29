@@ -12,6 +12,7 @@
 #include "fs_monitor_worker.h"
 #include "fs_monitor_dir_file_cfg.h"
 #include "fs_monitor_field_cfg.h"
+#include "fs_monitor_filter_cfg.h"
 
 struct fs_monitor_worker_pool {
 	char pool_name[DEFAULT_STR_LEN];
@@ -19,6 +20,7 @@ struct fs_monitor_worker_pool {
 	struct fs_monitor_worker * worker_list;
 	struct fs_monitor_dir_file_cfg * dir_file_cfg_list;
 	struct fs_monitor_field_cfg * field_cfg_list;
+	struct fs_monitor_filter_cfg * filter_cfg_list;
 };
 
 int init_worker_pool(char * pool_name , int pool_max_size , long separator , struct fs_monitor_common_cfg * common_cfg);

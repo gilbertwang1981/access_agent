@@ -2,7 +2,7 @@ OBJS := fs_monitor.o main.o fs_monitor_callback.o \
 	fs_file_analysis.o fs_field_linked_list.o \
 	fs_udp.o fs_init_daemon.o fs_monitor_worker.o fs_monitor_worker_pool.o \
 	fs_monitor_dir_file_cfg.o fs_monitor_field_cfg.o fs_monitor_cfg.o fs_monitor_sys_cfg.o \
-	fs_monitor_util.o
+	fs_monitor_util.o fs_monitor_filter_cfg.o
 
 LIBS := -L./
 

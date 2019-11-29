@@ -15,6 +15,24 @@
 #include "fs_monitor_log.h"
 #include "fs_monitor_sys_cfg.h"
 #include "fs_monitor_worker_pool.h"
+#include "fs_monitor_filter_cfg.h"
+
+int is_filter_success(char * field_key , char * field_value) {
+	struct fs_monitor_filter_cfg * filter_cfg = get_fs_monitor_filter_cfg();
+	while (filter_cfg != 0) {
+		if (strcmp(filter_cfg->filter_key , field_key) == 0) {
+			if (strcmp(field_value , filter_cfg->filter_value) == 0) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
+		filter_cfg = filter_cfg->next;
+	}
+
+	return 1;
+}
 
 void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result) {
 	struct fs_monitor_worker_pool * worker_pool = get_worker_pool();
@@ -26,10 +44,14 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 	struct field_linked_list * ptr = result;
 	int offset = 0;
 	int log_offset = 0;
+	int is_filtered = 0;
 	while (ptr != 0) {
 		struct fs_monitor_field_cfg * pfield = worker_pool->field_cfg_list;
 		while (pfield != 0) {
 			if (pfield->index == ptr->index) {
+				if (is_filter_success(pfield->field , ptr->field) == 0) {
+					is_filtered = 1;
+				}
 
 				log_offset += sprintf(log_buffer + log_offset , "%s|" , ptr->field);
 
@@ -45,10 +67,12 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 		ptr = ptr->next;
 	}
 
-	printf("发送消息：%s\n" , log_buffer);
+	if (is_filtered == 0) {
+		printf("发送消息：%s\n" , log_buffer);
 
-	if (-1 == send_to_server(worker->sock_fd , worker->host , worker->port , snd_buffer , size)) {
-		ERROR_LOG("发送失败");
+		if (-1 == send_to_server(worker->sock_fd , worker->host , worker->port , snd_buffer , size)) {
+			ERROR_LOG("发送失败");
+		}
 	}
 }
 

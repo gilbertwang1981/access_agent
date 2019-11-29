@@ -30,6 +30,7 @@ int init_worker_pool(char * pool_name , int pool_max_size , long separator , str
 
 	worker_pool.dir_file_cfg_list = convert_dir_file_cfg(common_cfg);
 	worker_pool.field_cfg_list = convert_field_cfg(common_cfg);
+	worker_pool.filter_cfg_list = convert_filter_cfg(common_cfg);
 
 	struct fs_monitor_dir_file_cfg * cfg_ptr = worker_pool.dir_file_cfg_list;
 	while (cfg_ptr != 0) {
