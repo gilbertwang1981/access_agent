@@ -5,7 +5,6 @@
  *      Author: gilbert
  */
 
-#include "fs_udp.h"
 #include "fs_monitor.h"
 #include "fs_monitor_worker.h"
 #include "fs_monitor_worker_pool.h"
@@ -21,7 +20,7 @@ void run_worker_loop(struct fs_monitor_worker_pool * worker_pool) {
 	fs_changed_monitor(worker_pool);
 }
 
-struct fs_monitor_worker * create_worker(char * dir , char * file , char * host , int port , long separator) {
+struct fs_monitor_worker * create_worker(char * dir , char * file , long separator) {
 	struct fs_monitor_worker * worker = (struct fs_monitor_worker *)malloc(sizeof(struct fs_monitor_worker));
 
 	if (get_fs_monitor_sys_cfg()->is_from_begin) {
@@ -31,22 +30,10 @@ struct fs_monitor_worker * create_worker(char * dir , char * file , char * host 
 	}
 
 	worker->next = 0;
-	worker->port = port;
-	(void)strcpy(worker->host , host);
 	(void)strcpy(worker->dir , dir);
 	(void)strcpy(worker->file , file);
 	worker->separator = separator;
-
 	worker->sampling_rate_ctr = 0;
-
-	worker->sock_fd = init_net();
-	if (worker->sock_fd == -1) {
-		ERROR_LOG("初始化udp socket失败");
-
-		free(worker);
-
-		return 0;
-	}
 
 	worker->notify_fd = inotify_init();
 	if (worker->notify_fd == -1) {

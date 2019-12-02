@@ -14,8 +14,6 @@
 struct fs_monitor_dir_file_cfg {
 	char dir[DEFAULT_STR_LEN];
 	char file[DEFAULT_STR_LEN];
-	char host[DEFAULT_STR_LEN];
-	int port;
 
 	struct fs_monitor_dir_file_cfg * next;
 };

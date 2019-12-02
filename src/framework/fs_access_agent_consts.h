@@ -22,6 +22,6 @@
 
 #define CFG_ITEM_TYPE_ARRAY	1
 
-#define CFG_DIR_FILE_FIELDS_NUM	4
+#define CFG_DIR_FILE_FIELDS_NUM	2
 
 #endif /* _ACCESS_AGENT_CONSTS_H_ */

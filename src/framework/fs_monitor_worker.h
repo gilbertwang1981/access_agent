@@ -13,9 +13,6 @@
 struct fs_monitor_worker {
 	char dir[DEFAULT_STR_LEN];
 	char file[DEFAULT_STR_LEN];
-	char host[DEFAULT_STR_LEN];
-	int port;
-	int sock_fd;
 	unsigned int offset;
 	int notify_fd;
 	int watch_dog;
@@ -25,6 +22,6 @@ struct fs_monitor_worker {
 	struct fs_monitor_worker * next;
 };
 
-struct fs_monitor_worker * create_worker(char * dir , char * file , char * host , int port , long separator);
+struct fs_monitor_worker * create_worker(char * dir , char * file , long separator);
 
 #endif /* _FS_MONITOR_WORKER_H_ */

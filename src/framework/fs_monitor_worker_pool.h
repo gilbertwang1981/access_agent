@@ -14,6 +14,8 @@
 #include "fs_monitor_field_cfg.h"
 #include "fs_monitor_filter_cfg.h"
 
+typedef int (* func_connector)(char * , int , char *);
+
 struct fs_monitor_worker_pool {
 	char pool_name[DEFAULT_STR_LEN];
 	int pool_max_size;
@@ -21,6 +23,8 @@ struct fs_monitor_worker_pool {
 	struct fs_monitor_dir_file_cfg * dir_file_cfg_list;
 	struct fs_monitor_field_cfg * field_cfg_list;
 	struct fs_monitor_filter_cfg * filter_cfg_list;
+	struct fs_monitor_connector_cfg * connector_cfg;
+	func_connector connector_callback_func;
 };
 
 int init_worker_pool(char * pool_name , int pool_max_size , long separator , struct fs_monitor_common_cfg * common_cfg);

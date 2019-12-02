@@ -11,7 +11,6 @@
 
 #include "fs_monitor_callback.h"
 #include "fs_access_agent_consts.h"
-#include "fs_udp.h"
 #include "fs_monitor_log.h"
 #include "fs_monitor_sys_cfg.h"
 #include "fs_monitor_worker_pool.h"
@@ -34,7 +33,7 @@ int is_filter_success(char * field_key , char * field_value) {
 	return 1;
 }
 
-void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * result) {
+void do_execute_connector(struct fs_monitor_worker * worker , struct field_linked_list * result) {
 	struct fs_monitor_worker_pool * worker_pool = get_worker_pool();
 
 	char snd_buffer[DEFAULT_LINE_BUFFER_SIZE] = {0};
@@ -68,18 +67,14 @@ void packet_udp(struct fs_monitor_worker * worker , struct field_linked_list * r
 	}
 
 	if (is_filtered == 0 && strlen(log_buffer) > 0) {
-		printf("发送消息：%s\n" , log_buffer);
-
-		if (-1 == send_to_server(worker->sock_fd , worker->host , worker->port , snd_buffer , size)) {
-			ERROR_LOG("发送失败");
-		}
+		get_worker_pool()->connector_callback_func(snd_buffer , size , log_buffer);
 	}
 }
 
 void synchronize(struct fs_monitor_worker * worker , char * line , long separator) {
 	struct field_linked_list * result = analysis_line(line , separator);
 
-	packet_udp(worker , result);
+	do_execute_connector(worker , result);
 
 	free_field_linked_list(result);
 }

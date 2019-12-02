@@ -1,13 +1,11 @@
 /*
- * fs_udp.c
+ * udp_connector.c
  *
- *  Created on: Nov 20, 2019
+ *  Created on: Dec 2, 2019
  *      Author: gilbert
  */
 
-#include "fs_udp.h"
-#include "fs_access_agent_consts.h"
-#include "fs_monitor_log.h"
+#include "udp_connector.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -15,6 +13,10 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+
+int connnect_to_source(char * snd_buffer , int buffer_size , char * logbuffer) {
+	return 0;
+}
 
 int send_to_server(int sock_fd , char * host , int port , char * buffer , int size) {
 	struct sockaddr_in addr;
