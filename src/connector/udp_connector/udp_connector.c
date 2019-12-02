@@ -14,9 +14,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-int connnect_to_source(char * snd_buffer , int buffer_size , char * logbuffer) {
-	return 0;
-}
+static int connector_udp_sock_fd = -1;
 
 int send_to_server(int sock_fd , char * host , int port , char * buffer , int size) {
 	struct sockaddr_in addr;
@@ -26,8 +24,6 @@ int send_to_server(int sock_fd , char * host , int port , char * buffer , int si
 
 	int bytes = -1;
 	if (-1 == (bytes = sendto(sock_fd , buffer , size , 0 , (struct sockaddr*)&addr , sizeof(addr)))) {
-		ERROR_LOG("发送错误");
-
 		return -1;
 	}
 
@@ -48,10 +44,21 @@ int destory_net(int sock_fd) {
 int init_net() {
 	int sock_fd = socket(AF_INET,SOCK_DGRAM,0);
 	if (sock_fd == -1) {
-		ERROR_LOG("socket创建失败");
-
 		return -1;
 	}
 
 	return sock_fd;
+}
+
+int connnect_to_source(char * snd_buffer , int buffer_size , char * logbuffer) {
+	printf("UDP connector，消息内容：%s\n" , logbuffer);
+
+	if (connector_udp_sock_fd == -1) {
+		connector_udp_sock_fd = init_net();
+		if (connector_udp_sock_fd == -1) {
+			return -1;
+		}
+	}
+
+	return send_to_server(connector_udp_sock_fd , "127.0.0.1" , 10012 , snd_buffer , buffer_size);
 }
