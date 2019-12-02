@@ -67,7 +67,12 @@ void do_execute_connector(struct fs_monitor_worker * worker , struct field_linke
 	}
 
 	if (is_filtered == 0 && strlen(log_buffer) > 0) {
-		get_worker_pool()->connector_callback_func(snd_buffer , size , log_buffer);
+		int i = 0;
+		for (i = 0;i < MAX_CONNECTOR_NUMS;i ++) {
+			if (get_worker_pool()->connector_callback_func[i] != 0) {
+				get_worker_pool()->connector_callback_func[i](snd_buffer , size , log_buffer);
+			}
+		}
 	}
 }
 

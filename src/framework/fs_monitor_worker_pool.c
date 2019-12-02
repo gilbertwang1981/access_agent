@@ -21,6 +21,43 @@ struct fs_monitor_worker_pool * get_worker_pool() {
 	return &worker_pool;
 }
 
+void init_connectors() {
+	int index = 0;
+	for (index = 0;index < MAX_CONNECTOR_NUMS;index ++) {
+		worker_pool.connector_callback_func[index] = 0;
+	}
+
+	struct fs_monitor_connector_cfg * config = worker_pool.connector_cfg;
+	int i = 0;
+	while (config != 0) {
+		if (i >= MAX_CONNECTOR_NUMS) {
+			ERROR_LOG("超过可配置的最大connector数量32.");
+
+			return;
+		}
+
+		void * handle_func = dlopen(config->connector , RTLD_NOW);
+		if (handle_func == 0) {
+			dlerror();
+			ERROR_LOG("初始化动态链接库失败,%s" , config->connector);
+
+			return;
+		}
+
+		worker_pool.connector_callback_func[i] = (int (*)(char * , int , char *))dlsym(handle_func , "connnect_to_source");
+		if (worker_pool.connector_callback_func[i] == 0) {
+			dlerror();
+			ERROR_LOG("初始化动态链接库方法失败");
+
+			return;
+		}
+
+		i ++;
+
+		config = config->next;
+	}
+}
+
 int init_worker_pool(char * pool_name , int pool_max_size , long separator , struct fs_monitor_common_cfg * common_cfg) {
 	worker_pool.pool_max_size = pool_max_size;
 
@@ -35,21 +72,7 @@ int init_worker_pool(char * pool_name , int pool_max_size , long separator , str
 	worker_pool.filter_cfg_list = convert_filter_cfg(common_cfg);
 	worker_pool.connector_cfg = convert_connector_cfg(common_cfg);
 
-	void * handle_func = dlopen(worker_pool.connector_cfg->connector , RTLD_NOW);
-	if (handle_func == 0) {
-		dlerror();
-		ERROR_LOG("初始化动态链接库失败,%s" , worker_pool.connector_cfg->connector);
-
-		return -1;
-	}
-
-	worker_pool.connector_callback_func = (int (*)(char * , int , char *))dlsym(handle_func , "connnect_to_source");
-	if (worker_pool.connector_callback_func == 0) {
-		dlerror();
-		ERROR_LOG("初始化动态链接库方法失败");
-
-		return -1;
-	}
+	init_connectors();
 
 	struct fs_monitor_dir_file_cfg * cfg_ptr = worker_pool.dir_file_cfg_list;
 	while (cfg_ptr != 0) {

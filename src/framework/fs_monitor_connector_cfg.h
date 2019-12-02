@@ -14,6 +14,8 @@
 
 struct fs_monitor_connector_cfg {
 	char connector[DEFAULT_STR_LEN];
+
+	struct fs_monitor_connector_cfg * next;
 };
 
 struct fs_monitor_connector_cfg * convert_connector_cfg(struct fs_monitor_common_cfg * common_cfg);

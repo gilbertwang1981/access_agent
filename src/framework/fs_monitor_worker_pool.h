@@ -24,12 +24,13 @@ struct fs_monitor_worker_pool {
 	struct fs_monitor_field_cfg * field_cfg_list;
 	struct fs_monitor_filter_cfg * filter_cfg_list;
 	struct fs_monitor_connector_cfg * connector_cfg;
-	func_connector connector_callback_func;
+	func_connector connector_callback_func[MAX_CONNECTOR_NUMS];
 };
 
 int init_worker_pool(char * pool_name , int pool_max_size , long separator , struct fs_monitor_common_cfg * common_cfg);
 void add_worker_to_pool(struct fs_monitor_worker * worker);
 struct fs_monitor_worker * get_worker_list(void);
 struct fs_monitor_worker_pool * get_worker_pool(void);
+void init_connectors(void);
 
 #endif /* _FS_MONITOR_WORKER_POOL_H_ */

@@ -24,4 +24,6 @@
 
 #define CFG_DIR_FILE_FIELDS_NUM	2
 
+#define MAX_CONNECTOR_NUMS	32
+
 #endif /* _ACCESS_AGENT_CONSTS_H_ */

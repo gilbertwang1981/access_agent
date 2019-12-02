@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 int connnect_to_source(char * snd_buffer , int buffer_size , char * logbuffer) {
-	printf("标注输出connector，消息内容：%s\n" , logbuffer);
+	printf("STDOUT connector，消息内容：%s\n" , logbuffer);
 
 	return 0;
 }
